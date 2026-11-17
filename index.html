@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autodiagnóstico datosensible.cl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Una columna de celular. Tinta para abrir y revelar, Bata para responder; la barra violeta tapa y destaca. Un solo tema, por identidad de marca. */
+  --tinta:#0E1A2B; --bata:#EEF1EF; --violeta:#5546E8; --salvia:#8FB5A3; --coral:#FF6B4A; --ambar:#E8A93B; --blanco:#FFFFFF;
+  --tinta-suave:rgba(14,26,43,.72); --linea:rgba(14,26,43,.16); --bata-suave:rgba(238,241,239,.74);
+  --display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;
+  --cuerpo:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0;min-height:100%}
+body{background:var(--bata);color:var(--tinta);font-family:var(--cuerpo);font-size:17px;line-height:1.45;-webkit-text-size-adjust:100%}
+body.fondo-tinta{background:var(--tinta)}
+button,input,select{font:inherit;color:inherit}
+p{margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin:0;text-wrap:balance}
+h1:focus,h2:focus{outline:none}
+:focus-visible{outline:3px solid var(--violeta);outline-offset:3px}
+.oscura :focus-visible,.cta :focus-visible,.res-cab :focus-visible{outline-color:var(--blanco)}
+
+.app{max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.pantalla{flex:1;display:flex;flex-direction:column;gap:20px;padding:20px 20px 32px;background:var(--bata)}
+.pantalla[hidden]{display:none}
+.oscura{background:var(--tinta);color:var(--bata)}
+.cab{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:30px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.04em;line-height:1}
+.logo svg{width:26px;height:26px;flex:none}
+.logo b{background:var(--violeta);color:var(--blanco);padding:.06em .16em .12em;border-radius:.16em;font-weight:800;margin-left:.04em}
+.paso{font-size:14px;font-weight:700;color:var(--tinta-suave);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--violeta)}
+.oscura .eyebrow,.res-cab .eyebrow{color:var(--salvia)}
+.barra{background:var(--violeta);color:var(--blanco);padding:0 .12em .04em;border-radius:.1em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.tapa{display:inline-block;height:1.05em;border-radius:.22em;background:var(--violeta);vertical-align:middle}
+
+.btn{display:flex;align-items:center;justify-content:center;min-height:56px;padding:14px 20px;border-radius:12px;border:2px solid transparent;font-weight:700;font-size:18px;line-height:1.2;cursor:pointer;text-decoration:none;text-align:center;width:100%}
+.btn-violeta{background:var(--violeta);color:var(--blanco)}
+.btn-claro{background:var(--blanco);color:var(--tinta)}
+.btn-borde{background:transparent;border-color:currentColor;color:inherit}
+.txtbtn,.lnk{background:none;border:0;padding:12px 4px;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer;align-self:flex-start;text-align:left}
+.lnk{color:var(--blanco)}
+
+/* Inicio */
+.hero{display:flex;flex-direction:column;gap:18px;flex:1;justify-content:center;padding:8px 0}
+.hero h1{font-size:clamp(38px,11.5vw,54px)}
+.bajada{font-size:18px;color:var(--bata-suave)}
+.muestra{border:1px solid rgba(238,241,239,.2);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.muestra-f{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:700}
+.muestra-f.chico{font-weight:400;font-size:15px;color:var(--bata-suave)}
+.tramos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tramos i{height:12px;border-radius:6px;background:rgba(238,241,239,.2)}
+.letra{font-size:14px;color:var(--bata-suave)}
+.firma{font-size:14px;font-weight:700;color:var(--salvia)}
+
+/* Preguntas */
+.q{font-size:clamp(25px,6.9vw,31px)}
+.seg{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.seg i{height:6px;border-radius:3px;background:var(--linea)}
+.seg i.ok{background:var(--violeta)}
+.tarjeta{background:var(--blanco);border-radius:18px;padding:26px 20px;display:flex;flex-direction:column;gap:14px}
+.apoyo{color:var(--tinta-suave)}
+.resps{display:flex;flex-direction:column;gap:10px}
+.resp{min-height:58px;padding:12px 18px;border-radius:12px;border:2px solid var(--tinta);background:var(--blanco);font-weight:700;font-size:18px;cursor:pointer;text-align:center}
+.resp.sel{background:var(--tinta);color:var(--blanco)}
+.resp.opc{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;min-height:66px;justify-content:center}
+.resp.opc small{font-size:15px;font-weight:400;color:var(--tinta-suave)}
+.resp.opc.sel small{color:var(--bata-suave)}
+
+/* Captura */
+#p-captura{padding:0;gap:0}
+.cap-top{padding:20px 20px 24px;display:flex;flex-direction:column;gap:18px}
+.cap-top h2{font-size:clamp(30px,8.6vw,38px)}
+.hoja{background:var(--bata);color:var(--tinta);border-radius:22px 22px 0 0;padding:24px 20px 32px;flex:1}
+form{display:flex;flex-direction:column;gap:16px}
+.campo{display:flex;flex-direction:column;gap:6px}
+.campo label{font-weight:700;font-size:16px}
+.opc-t{font-weight:400;color:var(--tinta-suave)}
+.campo input,.campo select{min-height:54px;padding:12px 14px;border-radius:12px;border:2px solid var(--linea);background:var(--blanco);width:100%}
+.campo input:focus,.campo select:focus{border-color:var(--violeta);outline:none}
+.campo [aria-invalid="true"]{border-color:var(--tinta)}
+.ayuda{font-size:14px;color:var(--tinta-suave)}
+.err{font-size:15px;font-weight:700;border-left:4px solid var(--coral);padding-left:10px}
+.err[hidden]{display:none}
+.trampa{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.casilla{display:flex;gap:12px;align-items:flex-start;font-size:16px;cursor:pointer}
+.casilla input{width:24px;height:24px;flex:none;margin:1px 0 0;accent-color:var(--violeta)}
+.aviso{border-top:1px solid var(--linea);padding-top:16px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--tinta-suave)}
+.aviso h3{font-family:var(--cuerpo);font-size:14px;letter-spacing:0;font-weight:700;color:var(--tinta)}
+.aviso a{color:var(--violeta);font-weight:700}
+
+/* Resultado */
+.res-cab{background:var(--tinta);color:var(--bata);border-radius:20px;padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+.res-t{font-size:clamp(26px,7.2vw,32px)}
+.nivel-n{position:relative;display:inline-block;font-family:var(--display);font-weight:800;letter-spacing:-.04em;font-size:clamp(46px,13.5vw,60px);line-height:1}
+[data-nivel="preventivo"] .nivel-n{color:var(--salvia)}
+[data-nivel="moderado"] .nivel-n{color:var(--ambar)}
+[data-nivel="critico"] .nivel-n{color:var(--coral)}
+[data-nivel="preventivo"] .tp{background:var(--salvia)}
+[data-nivel="moderado"] .tm{background:var(--ambar)}
+[data-nivel="critico"] .tc{background:var(--coral)}
+.tr-etq{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:13px;color:var(--bata-suave);margin-top:-8px}
+[data-nivel="preventivo"] .tr-etq span:nth-child(1),[data-nivel="moderado"] .tr-etq span:nth-child(2),[data-nivel="critico"] .tr-etq span:nth-child(3){color:var(--bata);font-weight:700}
+.cuenta{font-weight:700;font-variant-numeric:tabular-nums}
+.cubre{position:absolute;inset:-2px -4px;height:auto;transform-origin:right center;transition:transform .55s cubic-bezier(.7,0,.2,1)}
+.cubre.fuera{transform:scaleX(0)}
+.lectura{font-size:18px}
+.sub{font-size:24px}
+.sub.chico{font-size:19px}
+.punto{background:var(--blanco);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.punto h3{font-size:22px}
+.rev-t{position:relative;display:inline-block}
+.tag{align-self:flex-start;background:var(--tinta);color:var(--coral);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:6px}
+.tag.ciego{color:var(--salvia)}
+.ciego-t{font-weight:700}
+.norma{font-size:14px;font-weight:700;color:var(--tinta-suave)}
+.otros{display:flex;flex-direction:column;gap:8px}
+.otros ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.aclara{background:var(--salvia);color:var(--tinta);border-radius:14px;padding:16px 18px;font-weight:700}
+.cta{background:var(--violeta);color:var(--blanco);border-radius:20px;padding:24px 20px;display:flex;flex-direction:column;gap:14px}
+.cta h2{font-size:27px}
+.cta .chica{font-size:14px;opacity:.9}
+.pack{border-top:1px solid rgba(255,255,255,.32);padding-top:14px;display:flex;flex-direction:column;gap:12px}
+.chip{align-self:flex-start;background:var(--tinta);color:var(--blanco);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:6px}
+.reserva,.conf{display:flex;flex-direction:column;gap:10px}
+.conf[hidden],.hecho[hidden]{display:none}
+.conf{background:rgba(14,26,43,.28);border-radius:12px;padding:14px}
+.hecho{font-weight:700;border-left:4px solid var(--salvia);padding-left:10px}
+.comp{display:flex;flex-direction:column;gap:10px}
+.comp .fila{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.comp .btn{min-height:50px;font-size:16px;padding:10px 12px}
+.comp .hecho{word-break:break-all}
+.cierre{font-family:var(--display);font-weight:800;letter-spacing:-.035em;line-height:1.08;font-size:28px;text-wrap:balance}
+.letra2{font-size:14px;color:var(--tinta-suave)}
+
+@media (prefers-reduced-motion:reduce){.cubre{transition:none}}
+
+</style>
+</head>
+<body>
+<main class="app" id="app">
+  <section class="pantalla oscura" id="p-inicio"></section>
+  <section class="pantalla" id="p-perfil" hidden></section>
+  <section class="pantalla" id="p-pregunta" hidden></section>
+  <section class="pantalla oscura" id="p-captura" hidden></section>
+  <section class="pantalla" id="p-resultado" hidden></section>
+</main>
+<script>window.__CFG__=(function(){var o=(/[?&]o=([a-z0-9_-]{1,30})/i.exec(location.search)||[])[1]||"";return {modo:"real",api:"https://script.google.com/macros/s/AKfycbwbiHtZx4BlGqZT_OlL1QSzPQFgxeZXrmaoW5cXRu-s9Y14H14hXsQbxAQRKq2oh_fR_Q/exec",origen:o,url:location.origin+location.pathname};})();</script>
+<script>/* Autodiagnóstico datosensible.cl · v2.2 · Textos y reglas (única fuente: la página, el servidor y el documento salen de aquí) */
+var AD = {
+  version: "2.2",
+  corte: "2026-11-30T17:00:00-03:00",
+  politica: "https://docs.google.com/document/d/12D_SQHDiXGnMb-RIdiCOT88xgCIVB8a5mwVozwHCgOs/view",
+  instagram: "https://ig.me/m/datosensible.cl",
+  correo: "datosensiblecl@gmail.com",
+  firma: "Lucas Ortiz · Derecho UChile · datosensible.cl",
+
+  inicio: {
+    etiqueta: "Autodiagnóstico gratuito · 90 segundos",
+    titulo: "¿Tu consulta está <span class=\"barra\">lista</span>? Mídelo en 7 preguntas.",
+    bajada: "Siete preguntas sobre cómo trabajas hoy con WhatsApp, fichas y proveedores. Al terminar ves tu semáforo y los dos puntos que conviene revisar primero.",
+    boton: "Empezar",
+    letra: "Para psicólogos, psiquiatras, médicos y centros de salud en Chile. No te pedimos datos de pacientes. Al final te pedimos tu nombre y tu correo para mostrarte el resultado y enviarte una copia."
+  },
+
+  perfil: {
+    pregunta: "Para partir: ¿dónde atiendes?",
+    opciones: [
+      { id: "ind", t: "Consulta individual", d: "", variante: "ind", tipo: "Profesional", lugar: "tu consulta" },
+      { id: "comp", t: "Consulta compartida o centro pequeño", d: "2 a 10 profesionales", variante: "grupo", tipo: "Centro", lugar: "tu consulta" },
+      { id: "centro", t: "Centro médico o clínica", d: "Más de 10 profesionales", variante: "grupo", tipo: "Centro", lugar: "tu centro" }
+    ]
+  },
+
+  respuestas: [
+    { id: "si", t: "Sí" },
+    { id: "no", t: "No" },
+    { id: "ns", t: "No estoy seguro" }
+  ],
+
+  /* riesgo: la respuesta que marca exposición. «No estoy seguro» siempre suma. */
+  preguntas: [
+    {
+      id: 1, riesgo: "si",
+      ind: { t: "¿Hablas con tus pacientes desde el mismo WhatsApp o correo que usas en tu vida personal?", a: "Horas, recetas, órdenes y resultados cuentan." },
+      grupo: { t: "¿En tu consulta o centro se habla con pacientes desde WhatsApp o correos personales del equipo?", a: "Recepción y profesionales: horas, recetas, órdenes y resultados cuentan." },
+      tarjeta: {
+        norma: "Ley 19.628, art. 2 letra g) y art. 14 quinquies",
+        ind: { titulo: "Datos de pacientes en tus cuentas personales", texto: "Recetas, órdenes y resultados quedan mezclados con tu vida privada, en un teléfono que no es solo de trabajo y en respaldos que nadie configuró pensando en pacientes. Son datos sensibles. Y con la Ley 21.719, si algo pasa te toca a ti demostrar qué medidas de seguridad tenías." },
+        grupo: { titulo: "Datos de pacientes en cuentas personales del equipo", texto: "Recetas, órdenes y resultados quedan en teléfonos y correos que el centro no administra, y siguen ahí cuando esa persona deja de trabajar con ustedes. Son datos sensibles. Y con la Ley 21.719, si algo pasa le toca al centro demostrar qué medidas de seguridad tenía." }
+      }
+    },
+    {
+      id: 2, riesgo: "no",
+      ind: { t: "¿Tienes un contrato o condiciones por escrito con cada proveedor que guarda datos de tus pacientes?", a: "Software de fichas, agenda online, Drive, iCloud." },
+      grupo: { t: "¿Hay un contrato o condiciones por escrito con cada proveedor que guarda datos de pacientes?", a: "Software de fichas, agenda online, Drive, respaldos." },
+      tarjeta: {
+        norma: "Art. 15 bis",
+        ind: { titulo: "Proveedores sin contrato", texto: "La ficha puede estar en el sistema de otro, pero la responsabilidad sigue siendo tuya. La Ley 21.719 pide que quien guarda datos por tu cuenta lo haga bajo un contrato que diga qué datos trata, para qué y por cuánto tiempo. Sin ese papel no puedes mostrar qué puede hacer el proveedor con tus fichas." },
+        grupo: { titulo: "Proveedores sin contrato", texto: "La ficha puede estar en el sistema de otro, pero la responsabilidad sigue siendo del centro. La Ley 21.719 pide que quien guarda datos por cuenta de ustedes lo haga bajo un contrato que diga qué datos trata, para qué y por cuánto tiempo. Sin ese papel no pueden mostrar qué puede hacer el proveedor con las fichas." }
+      }
+    },
+    {
+      id: 3, riesgo: "si",
+      ind: { t: "¿Tú o alguien de tu equipo ha pegado notas o datos de pacientes en ChatGPT u otra IA?", a: "Para ordenar fichas, resumir sesiones o redactar informes." },
+      grupo: { t: "¿Alguien del equipo ha pegado notas o datos de pacientes en ChatGPT u otra IA?", a: "Para ordenar fichas, resumir atenciones o redactar informes." },
+      tarjeta: {
+        norma: "Art. 15 bis",
+        ind: { titulo: "Datos clínicos en herramientas de IA", texto: "Lo que el paciente dijo en sesión queda en los servidores de un proveedor con el que no tienes un contrato que regule qué puede hacer con esos datos. Usar IA no está prohibido. Hacerlo con datos que identifican al paciente te deja sin respaldo." },
+        grupo: { titulo: "Datos clínicos en herramientas de IA", texto: "Lo que el paciente contó en la atención queda en los servidores de un proveedor con el que el centro no tiene un contrato que regule qué puede hacer con esos datos. Usar IA no está prohibido. Hacerlo con datos que identifican al paciente, y sin una regla común para el equipo, deja al centro sin respaldo." }
+      }
+    },
+    {
+      id: 4, riesgo: "no",
+      ind: { t: "¿Tus pacientes reciben por escrito qué haces con sus datos: dónde guardas la ficha, por cuánto tiempo y con quién la compartes?", a: "El consentimiento clínico habla del tratamiento, no de los datos." },
+      grupo: { t: "¿Los pacientes reciben por escrito qué se hace con sus datos: dónde se guarda la ficha, por cuánto tiempo y con quién se comparte?", a: "El consentimiento clínico habla del tratamiento, no de los datos." },
+      tarjeta: {
+        norma: "Art. 14 ter",
+        ind: { titulo: "Pacientes que no saben qué pasa con sus datos", texto: "Tu consentimiento clínico habla del tratamiento. La Ley 21.719 pide además que el paciente pueda saber qué datos guardas, para qué, por cuánto tiempo y a quién se los comunicas. Firmar no es lo mismo que informar." },
+        grupo: { titulo: "Pacientes que no saben qué pasa con sus datos", texto: "El consentimiento clínico habla del tratamiento. La Ley 21.719 pide además que el paciente pueda saber qué datos guarda el centro, para qué, por cuánto tiempo y a quién se los comunica. Firmar no es lo mismo que informar." }
+      }
+    },
+    {
+      id: 5, riesgo: "si",
+      ind: { t: "¿Alguien más puede abrir fichas o chats de pacientes con tu clave o desde tu equipo?", a: "Secretaria, colega, reemplazo o alguien de tu casa." },
+      grupo: { t: "¿Hay claves compartidas, o personas que pueden abrir fichas que no necesitan para su trabajo?", a: "Recepción, facturación, reemplazos que ya no están." },
+      tarjeta: {
+        norma: "Art. 14 quinquies",
+        ind: { titulo: "Accesos compartidos", texto: "Si varias personas entran con la misma clave o al mismo equipo, no hay forma de saber quién vio qué. La Ley 21.719 exige medidas que resguarden la confidencialidad, y ante un incidente te corresponde acreditar que existían y funcionaban." },
+        grupo: { titulo: "Accesos más amplios que la función", texto: "Si recepción, facturación y profesionales ven lo mismo, o varias personas entran con una misma clave, no hay forma de saber quién vio qué. La Ley 21.719 exige medidas que resguarden la confidencialidad, y ante un incidente le corresponde al centro acreditar que existían y funcionaban." }
+      }
+    },
+    {
+      id: 6, riesgo: "no",
+      ind: { t: "Si hoy un paciente te pide una copia de sus datos, o que elimines algo, ¿sabes en qué plazo debes responder y qué puedes negarle?", a: "No todo lo que se pide se puede borrar." },
+      grupo: { t: "Si hoy un paciente pide una copia de sus datos, o que eliminen algo, ¿está definido quién responde, en qué plazo y qué se le puede negar?", a: "No todo lo que se pide se puede borrar." },
+      tarjeta: {
+        norma: "Arts. 4 y 11; Ley 20.584, art. 13",
+        ind: { titulo: "Sin procedimiento para los derechos del paciente", texto: "Con la Ley 21.719, tu paciente puede pedir acceso, rectificación, supresión, oposición, portabilidad o bloqueo de sus datos, y el plazo para responder es de 30 días corridos. No todo se puede eliminar, porque la ficha clínica tiene reglas propias de conservación. Conviene saber qué responder antes de que llegue la solicitud." },
+        grupo: { titulo: "Sin procedimiento para los derechos del paciente", texto: "Con la Ley 21.719, un paciente puede pedir acceso, rectificación, supresión, oposición, portabilidad o bloqueo de sus datos, y el plazo para responder es de 30 días corridos. No todo se puede eliminar, porque la ficha clínica tiene reglas propias de conservación. Si nadie tiene asignada la respuesta, el plazo corre igual." }
+      }
+    },
+    {
+      id: 7, riesgo: "no",
+      ind: { t: "Si mañana pierdes el celular o te hackean el correo, ¿tienes escrito qué hacer y a quién avisar?", a: "Las primeras horas son las que cuentan." },
+      grupo: { t: "Si mañana se pierde un equipo o hackean un correo del centro, ¿está escrito qué hacer y quién avisa?", a: "Las primeras horas son las que cuentan." },
+      tarjeta: {
+        norma: "Art. 14 sexies",
+        ind: { titulo: "Sin plan si algo se filtra", texto: "Un celular perdido con chats de pacientes puede ser una vulneración de datos sensibles. Cuando hay riesgo para los pacientes, la Ley 21.719 pide reportarla a la Agencia sin dilaciones indebidas y comunicársela a los afectados. Decidir cómo hacerlo con el teléfono ya perdido es tarde." },
+        grupo: { titulo: "Sin plan si algo se filtra", texto: "Un notebook perdido o un correo hackeado puede ser una vulneración de datos sensibles. Cuando hay riesgo para los pacientes, la Ley 21.719 pide reportarla a la Agencia sin dilaciones indebidas y comunicársela a los afectados. Definir quién decide y quién avisa con el incidente en curso es tarde." }
+      }
+    }
+  ],
+
+  /* Orden fijo para elegir los dos puntos principales entre los expuestos */
+  orden: { ind: [7, 4, 2, 1, 5, 3, 6], grupo: [5, 7, 2, 4, 6, 1, 3] },
+
+  niveles: {
+    preventivo: { nombre: "Preventivo", min: 0, max: 2 },
+    moderado: { nombre: "Moderado", min: 3, max: 4 },
+    critico: { nombre: "Crítico", min: 5, max: 7 }
+  },
+
+  lecturas: {
+    ind: {
+      critico: "Hoy los datos de tus pacientes dependen más de la costumbre que de un sistema. Casi todo se ordena con decisiones y documentos, sin software caro. Conviene partir por estos dos puntos.",
+      moderado: "Ya tienes resuelta buena parte. Lo que falta es ordenarlo y dejarlo por escrito. Parte por estos dos puntos.",
+      preventivo: "Vas por buen camino. En estas siete preguntas aparecen pocos puntos débiles. Queda afinarlos y poder demostrarlo si alguien pregunta.",
+      cero: "Ningún punto débil en estas siete preguntas. El test mide hábitos: no revisa tus documentos ni tus contratos. Confirmar que lo escrito acompaña a lo que haces es el paso que sigue."
+    },
+    grupo: {
+      critico: "Hoy los datos de los pacientes dependen más de la costumbre del equipo que de un sistema. Casi todo se ordena con decisiones, roles y documentos, sin software caro. Conviene partir por estos dos puntos.",
+      moderado: "Ya tienen resuelta buena parte. Lo que falta es ordenarlo y dejarlo por escrito. Partan por estos dos puntos.",
+      preventivo: "Van por buen camino. En estas siete preguntas aparecen pocos puntos débiles. Queda afinarlos y poder demostrarlo si alguien pregunta.",
+      cero: "Ningún punto débil en estas siete preguntas. El test mide hábitos: no revisa los documentos ni los contratos del centro. Confirmar que lo escrito acompaña a lo que hacen es el paso que sigue."
+    }
+  },
+
+  captura: {
+    titulo: "Tu resultado está listo.",
+    bajadaN: "Encontramos {n} puntos por revisar en {lugar}. Dinos a quién se lo mostramos y te enviamos una copia a tu correo.",
+    bajada1: "Encontramos 1 punto por revisar en {lugar}. Dinos a quién se lo mostramos y te enviamos una copia a tu correo.",
+    bajada0: "Dinos a quién se lo mostramos y te enviamos una copia a tu correo.",
+    profesiones: ["Psicología", "Psiquiatría", "Medicina (otra especialidad)", "Otra profesión de la salud", "Administración o dirección de un centro"],
+    whatsapp: "Solo si prefieres que te escriba por ahí.",
+    consentimiento: "Leí el aviso de privacidad y autorizo el uso de mis datos para recibir mi resultado.",
+    novedades: "Quiero recibir contenido y novedades de datosensible.cl.",
+    boton: "Ver mi semáforo",
+    aviso: "Responsable de tus datos: Lucas Ortiz Mancilla (datosensible.cl), datosensiblecl@gmail.com. Usamos tu nombre, profesión, correo, teléfono (si lo indicas) y tus respuestas para calcular tu resultado, mostrártelo, enviártelo por correo y contactarte si pides una reunión o reservas un cupo. Solo si lo autorizas, también para enviarte contenido y novedades. No pedimos ni guardamos datos de pacientes. No vendemos ni cedemos tus datos. Los tratan por cuenta nuestra Google (esta página, la planilla y el correo) y las herramientas de automatización con que gestionamos los contactos; sus servidores pueden estar fuera de Chile. Conservamos tus respuestas hasta 12 meses después de completar el test. Puedes pedir acceso, rectificación, eliminación u oposición escribiendo a datosensiblecl@gmail.com."
+  },
+
+  resultado: {
+    etiqueta: "Semáforo de exposición",
+    encabezado: "{nombre}, este es tu semáforo.",
+    cuenta: "{n} de 7 puntos por revisar",
+    dos: "Tus dos puntos más expuestos",
+    uno: "Tu punto por revisar",
+    otros: "También marcaste",
+    brecha: "Brecha",
+    ciego: "Punto ciego",
+    ciegoTexto: "Marcaste «No estoy seguro». Vale la pena confirmarlo.",
+    aclaracion: "Esto no depende solo de la ley nueva. Los datos de salud ya son datos sensibles hoy.",
+    cierre: "Lo que no se revisa, se asume. Y en datos de salud, asumir sale caro.",
+    letra: "Orientación general según tus respuestas. No reemplaza la revisión de tu consulta. Te enviamos una copia a {correo}.",
+    notaNormas: "Los artículos sin ley indicada son de la Ley 19.628, en el texto modificado por la Ley 21.719.",
+    compartir: "¿Atiendes con colegas? Envíales el test.",
+    compartirTexto: "Hice este test de 90 segundos sobre los datos de pacientes en la consulta. Es gratuito:"
+  },
+
+  productos: {
+    mc: { nombre: "Masterclass", precio: "$49.000" },
+    pack: { nombre: "Pack Consulta Lista", precio: "$129.000" }
+  },
+
+  llamados: {
+    M: {
+      titulo: "Lo vemos aplicado a tu consulta el lunes 30",
+      texto: "Masterclass «Fichas clínicas seguras: la Ley 21.719 en tu consulta». Lunes 30 de noviembre, 19:00, online y en vivo. Dos horas sobre qué te exige la ley, fichas, WhatsApp y atención online, y qué hacer si algo se filtra. $49.000, con grabación por 30 días.",
+      boton: "Reservar mi cupo",
+      pack: "¿Quieres además las plantillas y que revise tus documentos? Pack Consulta Lista, $129.000, 8 cupos.",
+      botonPack: "Reservar el Pack",
+      sugerido: "Sugerido para tu nivel",
+      secundario: "Prefiero conversarlo antes: agendar 15 minutos"
+    },
+    RC: {
+      titulo: "En un centro, esto se ordena en equipo",
+      texto: "Agenda una reunión de 15 minutos. Me cuentas cómo trabajan y vemos qué corresponde: capacitación para el equipo, diagnóstico de cumplimiento con plan priorizado o asesoría permanente.",
+      boton: "Agendar reunión de 15 minutos",
+      letra: "Sin costo. Sin datos de pacientes.",
+      lineaMC: "Si atiendes en consulta compartida, cada profesional puede tomar la masterclass del lunes 30.",
+      botonMC: "Reservar mi cupo"
+    },
+    RI: {
+      titulo: "Revisemos tu consulta",
+      texto: "Quince minutos para ver qué está bien resuelto y qué conviene ajustar primero.",
+      boton: "Agendar 15 minutos",
+      secundario: "Avísame de la próxima masterclass"
+    },
+    reserva: {
+      confirmar: "Te envío a {correo} los datos para transferir {precio}. Tu cupo queda confirmado cuando recibo tu comprobante.",
+      si: "Enviar los datos a mi correo",
+      no: "Ahora no",
+      listo: "Listo. Revisa {correo}: ahí están los datos para transferir. Responde ese correo con el comprobante y te confirmo el cupo.",
+      instagram: "Se abre nuestro chat de Instagram. Escribe CUPO y te enviamos los datos para transferir."
+    },
+    reunion: {
+      listo: "Listo. Te escribo a {correo} para coordinar el horario."
+    },
+    espera: {
+      listo: "Anotado. Te aviso a {correo} cuando abra la próxima fecha."
+    }
+  },
+
+  correos: {
+    resultado: {
+      asunto: "Tu semáforo: {nivel} ({n} de 7)",
+      saludo: "Hola, {nombre}:",
+      intro: "Aquí está el resultado de tu autodiagnóstico.",
+      linea: "Semáforo: {nivel}. {n} de 7 puntos por revisar.",
+      finalMC: "El lunes 30 de noviembre, a las 19:00, lo vemos aplicado a la consulta en la masterclass «Fichas clínicas seguras: la Ley 21.719 en tu consulta». Online y en vivo, con grabación por 30 días. $49.000. Si quieres tu cupo, responde este correo con la palabra CUPO y te envío los datos para transferir.",
+      finalSinPermiso: "Si quieres revisar tu consulta, responde este correo.",
+      finalCentro: "Para coordinar la reunión de 15 minutos, responde este correo con dos horarios que te acomoden.",
+      finalDespues: "Si quieres que revisemos tu consulta en 15 minutos, responde este correo.",
+      pie: "Recibes este correo porque completaste el autodiagnóstico de datosensible.cl. Es una orientación general según tus respuestas. Si quieres que eliminemos tus datos, responde este correo."
+    },
+    reserva: {
+      asunto: "Tu reserva: masterclass del 30 de noviembre",
+      cuerpo: "Reservaste: {producto} ({precio}).\n\nPara confirmar tu cupo, transfiere a:\n{transferencia}\n\nDespués responde este correo con el comprobante. Te confirmo el cupo y te envío el enlace de acceso.\n\nCuándo: lunes 30 de noviembre, de 19:00 a 21:00 (hora de Chile), online y en vivo. Queda grabada: puedes verla durante 30 días.\nLas inscripciones cierran el lunes 30 a las 17:00.",
+      pie: "Recibes este correo porque pediste reservar un cupo desde el autodiagnóstico de datosensible.cl."
+    },
+    firma: "Lucas Ortiz Mancilla\nDerecho UChile · Diplomado en Protección de Datos Personales\ndatosensible.cl"
+  }
+};
+if (typeof module !== "undefined") { module.exports = AD; }
+</script>
+<script>/* Autodiagnóstico datosensible.cl · v2.2 · Reglas de puntaje y llamados (las usa la página y el servidor) */
+var Logica = (function () {
+  function variante(AD, perfilId) {
+    for (var i = 0; i < AD.perfil.opciones.length; i++) {
+      if (AD.perfil.opciones[i].id === perfilId) return AD.perfil.opciones[i].variante;
+    }
+    return "ind";
+  }
+  function perfil(AD, perfilId) {
+    for (var i = 0; i < AD.perfil.opciones.length; i++) {
+      if (AD.perfil.opciones[i].id === perfilId) return AD.perfil.opciones[i];
+    }
+    return AD.perfil.opciones[0];
+  }
+  /* Una respuesta marca exposición si es la de riesgo o «No estoy seguro» */
+  function expuesta(pregunta, resp) { return resp === "ns" || resp === pregunta.riesgo; }
+  function puntos(AD, resps) {
+    var n = 0;
+    for (var i = 0; i < AD.preguntas.length; i++) { if (expuesta(AD.preguntas[i], resps[i])) n++; }
+    return n;
+  }
+  /* Riesgo 0–100 para la columna K del CRM (bajo < 30, medio 30–59, alto ≥ 60) */
+  function riesgo(n) { return Math.round(n * 100 / 7); }
+  function nivel(n) { return n >= 5 ? "critico" : (n >= 3 ? "moderado" : "preventivo"); }
+  /* Los dos puntos principales: los primeros expuestos según el orden fijo del perfil */
+  function principales(AD, perfilId, resps) {
+    var orden = AD.orden[variante(AD, perfilId)], out = [];
+    for (var i = 0; i < orden.length && out.length < 2; i++) {
+      var p = AD.preguntas[orden[i] - 1];
+      if (expuesta(p, resps[orden[i] - 1])) out.push(orden[i]);
+    }
+    return out;
+  }
+  function otros(AD, perfilId, resps) {
+    var pri = principales(AD, perfilId, resps), out = [];
+    for (var i = 0; i < AD.preguntas.length; i++) {
+      var id = AD.preguntas[i].id;
+      if (expuesta(AD.preguntas[i], resps[i]) && pri.indexOf(id) < 0) out.push(id);
+    }
+    return out;
+  }
+  /* Qué llamado se muestra según perfil, nivel, fecha y cupos del pack */
+  function llamado(perfilId, niv, antesDelCorte, packDisponible) {
+    if (perfilId === "ind") {
+      if (!antesDelCorte) return { bloque: "RI" };
+      return { bloque: "M", pack: !!packDisponible && niv !== "preventivo", sugerido: !!packDisponible && niv === "critico" };
+    }
+    if (perfilId === "comp") return { bloque: "RC", lineaMC: !!antesDelCorte };
+    return { bloque: "RC", lineaMC: false };
+  }
+  function resumen(AD, perfilId, resps) {
+    var n = puntos(AD, resps);
+    return { puntos: n, riesgo: riesgo(n), nivel: nivel(n), principales: principales(AD, perfilId, resps), otros: otros(AD, perfilId, resps) };
+  }
+  return { variante: variante, perfil: perfil, expuesta: expuesta, puntos: puntos, riesgo: riesgo, nivel: nivel, principales: principales, otros: otros, llamado: llamado, resumen: resumen };
+})();
+if (typeof module !== "undefined") { module.exports = Logica; }
+</script>
+<script>
+(function () {
+  "use strict";
+  var CFG = { modo: "previa", corte: AD.corte, packDisponible: true, agendaUrl: "", reserva: "correo", origen: "", url: "" };
+  var ext = window.__CFG__ || {}, k;
+  for (k in ext) { if (Object.prototype.hasOwnProperty.call(ext, k)) CFG[k] = ext[k]; }
+  var esPrevia = CFG.modo === "previa";
+  var S = { perfil: null, i: 0, r: [], datos: null, id: null, cola: [], t0: 0, simDespues: false, simPack: true, bloqueo: false };
+  var PANT = ["p-inicio", "p-perfil", "p-pregunta", "p-captura", "p-resultado"];
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function fmt(t, o) { return esc(t).replace(/\{(\w+)\}/g, function (_, c) { return esc(o[c]); }); }
+  function logo(sobreTinta) {
+    return '<span class="logo" role="img" aria-label="datosensible.cl"><svg viewBox="0 0 128 128" aria-hidden="true"><rect width="128" height="128" rx="28" fill="' + (sobreTinta ? "#EEF1EF" : "#0E1A2B") + '"/><rect x="24" y="36" width="56" height="8" rx="4" fill="#8FB5A3"/><rect x="24" y="58" width="80" height="22" rx="6" fill="#5546E8"/><rect x="24" y="94" width="40" height="8" rx="4" fill="#8FB5A3"/></svg><span aria-hidden="true">dato<b>sensible</b></span></span>';
+  }
+  function servidor(fn, arg, ok, mal) {
+    if (CFG.api && window.fetch) {                                     // página directa: Apps Script queda detrás
+      fetch(CFG.api, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ fn: fn, arg: arg }) })
+        .then(function (x) { return x.json(); })
+        .then(function (x) { if (x && x.ok) { if (ok) ok(x.r); } else if (mal) mal(x); })
+        .catch(function (err) { if (mal) mal(err); });
+      return;
+    }
+    try {
+      if (window.google && google.script && google.script.run) {
+        google.script.run.withSuccessHandler(ok || function () {}).withFailureHandler(mal || function () {})[fn](arg);
+        return;
+      }
+    } catch (e) { /* sin servidor: vista previa */ }
+    setTimeout(function () { if (ok) ok({ ok: true, id: "previa" }); }, 250);
+  }
+  function contar(paso) { servidor("contar", { paso: paso, perfil: S.perfil || "" }); }
+  function evento(tipo) {
+    var e = { id: S.id, correo: S.datos ? S.datos.correo : "", tipo: tipo };
+    if (!S.id) { S.cola.push(e); return; }
+    servidor("evento", e);
+  }
+  function vaciarCola() { var c = S.cola; S.cola = []; c.forEach(function (e) { e.id = S.id; servidor("evento", e); }); }
+  function antesDelCorte() { return esPrevia ? !S.simDespues : Date.now() < Date.parse(CFG.corte); }
+  function hayPack() { return esPrevia ? S.simPack : !!CFG.packDisponible; }
+  function mostrar(id) {
+    PANT.forEach(function (p) { $(p).hidden = p !== id; });
+    document.body.className = (id === "p-inicio" || id === "p-captura") ? "fondo-tinta" : "";
+    window.scrollTo(0, 0);
+    var h = $(id).querySelector("[data-foco]");
+    if (h) { h.setAttribute("tabindex", "-1"); try { h.focus({ preventScroll: true }); } catch (e) { h.focus(); } }
+  }
+
+  /* ---------- Inicio ---------- */
+  function pintarInicio() {
+    $("p-inicio").innerHTML =
+      '<header class="cab">' + logo(true) + '</header>' +
+      '<div class="hero">' +
+        '<p class="eyebrow">' + esc(AD.inicio.etiqueta) + '</p>' +
+        '<h1 data-foco>' + AD.inicio.titulo + '</h1>' +
+        '<p class="bajada">' + esc(AD.inicio.bajada) + '</p>' +
+        '<div class="muestra" aria-hidden="true">' +
+          '<div class="muestra-f"><span>Tu semáforo</span><span class="tapa" style="width:6.4em"></span></div>' +
+          '<div class="tramos"><i></i><i></i><i></i></div>' +
+          '<div class="muestra-f chico"><span>Punto 1</span><span class="tapa" style="width:9.5em"></span></div>' +
+          '<div class="muestra-f chico"><span>Punto 2</span><span class="tapa" style="width:7.2em"></span></div>' +
+        '</div>' +
+        '<button class="btn btn-violeta" id="b-empezar" type="button">' + esc(AD.inicio.boton) + '</button>' +
+        '<p class="letra">' + esc(AD.inicio.letra) + '</p>' +
+      '</div>' +
+      '<p class="firma">' + esc(AD.firma) + '</p>';
+    $("b-empezar").onclick = function () { S.t0 = Date.now(); contar("inicio"); pintarPerfil(); mostrar("p-perfil"); };
+  }
+
+  /* ---------- Perfil ---------- */
+  function pintarPerfil() {
+    var h = '<header class="cab">' + logo(false) + '</header><h2 class="q" data-foco>' + esc(AD.perfil.pregunta) + '</h2><div class="resps">';
+    AD.perfil.opciones.forEach(function (o) {
+      h += '<button class="resp opc' + (S.perfil === o.id ? " sel" : "") + '" type="button" data-id="' + o.id + '"><span>' + esc(o.t) + '</span>' + (o.d ? '<small>' + esc(o.d) + '</small>' : '') + '</button>';
+    });
+    $("p-perfil").innerHTML = h + '</div>';
+    Array.prototype.forEach.call($("p-perfil").querySelectorAll("[data-id]"), function (b) {
+      b.onclick = function () { S.perfil = b.getAttribute("data-id"); S.i = 0; S.r = []; contar("perfil"); pintarPregunta(); mostrar("p-pregunta"); };
+    });
+  }
+
+  /* ---------- Preguntas ---------- */
+  function pintarPregunta() {
+    var p = AD.preguntas[S.i], q = p[Logica.variante(AD, S.perfil)], seg = "", j;
+    for (j = 0; j < 7; j++) seg += '<i class="' + (j <= S.i ? "ok" : "") + '"></i>';
+    var h = '<header class="cab">' + logo(false) + '<span class="paso">Pregunta ' + (S.i + 1) + ' de 7</span></header>' +
+      '<div class="seg" aria-hidden="true">' + seg + '</div>' +
+      '<div class="tarjeta"><h2 class="q" data-foco>' + esc(q.t) + '</h2><p class="apoyo">' + esc(q.a) + '</p></div>' +
+      '<div class="resps" role="group" aria-label="Tu respuesta">';
+    AD.respuestas.forEach(function (r) {
+      h += '<button class="resp' + (S.r[S.i] === r.id ? " sel" : "") + '" type="button" data-r="' + r.id + '">' + esc(r.t) + '</button>';
+    });
+    h += '</div><button class="txtbtn" type="button" id="b-atras">Anterior</button>';
+    $("p-pregunta").innerHTML = h;
+    S.bloqueo = false;
+    Array.prototype.forEach.call($("p-pregunta").querySelectorAll("[data-r]"), function (b) {
+      b.onclick = function () {
+        if (S.bloqueo) return;
+        S.bloqueo = true;
+        S.r[S.i] = b.getAttribute("data-r");
+        b.className = "resp sel";
+        setTimeout(function () {
+          if (S.i < 6) { S.i++; pintarPregunta(); mostrar("p-pregunta"); }
+          else { contar("fin"); pintarCaptura(); mostrar("p-captura"); }
+        }, 140);
+      };
+    });
+    $("b-atras").onclick = function () {
+      if (S.i > 0) { S.i--; pintarPregunta(); mostrar("p-pregunta"); }
+      else { pintarPerfil(); mostrar("p-perfil"); }
+    };
+  }
+
+  /* ---------- Captura de datos ---------- */
+  function pintarCaptura() {
+    var res = Logica.resumen(AD, S.perfil, S.r), pf = Logica.perfil(AD, S.perfil), C = AD.captura, grupo = pf.variante === "grupo";
+    var baj = res.puntos === 0 ? esc(C.bajada0) : fmt(res.puntos === 1 ? C.bajada1 : C.bajadaN, { n: res.puntos, lugar: pf.lugar });
+    var ops = '<option value="">Elige una opción</option>';
+    C.profesiones.forEach(function (p) { ops += '<option>' + esc(p) + '</option>'; });
+    var d = S.datos || {};
+    $("p-captura").innerHTML =
+      '<div class="cap-top"><header class="cab">' + logo(true) + '</header>' +
+        '<h2 data-foco>' + esc(C.titulo) + '</h2><p class="bajada">' + baj + '</p>' +
+        '<div class="muestra" aria-hidden="true">' +
+          '<div class="muestra-f"><span>Tu semáforo</span><span class="tapa" style="width:6.4em"></span></div>' +
+          '<div class="tramos"><i></i><i></i><i></i></div>' +
+          (res.puntos > 0 ? '<div class="muestra-f chico"><span>Punto 1</span><span class="tapa" style="width:9.5em"></span></div>' : '') +
+          (res.puntos > 1 ? '<div class="muestra-f chico"><span>Punto 2</span><span class="tapa" style="width:7.2em"></span></div>' : '') +
+        '</div></div>' +
+      '<div class="hoja"><form id="f" novalidate>' +
+        '<div class="campo"><label for="f-nombre">Nombre</label><input id="f-nombre" type="text" autocomplete="given-name" maxlength="60" value="' + esc(d.nombre) + '"><p class="err" id="e-nombre" hidden></p></div>' +
+        '<div class="campo"><label for="f-profesion">Profesión o especialidad</label><select id="f-profesion">' + ops + '</select><p class="err" id="e-profesion" hidden></p></div>' +
+        (grupo ? '<div class="campo"><label for="f-centro">Nombre del centro' + (S.perfil === "comp" ? ' <span class="opc-t">(opcional)</span>' : '') + '</label><input id="f-centro" type="text" autocomplete="organization" maxlength="80" value="' + esc(d.centro) + '"><p class="err" id="e-centro" hidden></p></div>' : '') +
+        '<div class="campo"><label for="f-correo">Correo</label><input id="f-correo" type="email" inputmode="email" autocomplete="email" maxlength="120" value="' + esc(d.correo) + '"><p class="err" id="e-correo" hidden></p></div>' +
+        '<div class="campo"><label for="f-whatsapp">WhatsApp <span class="opc-t">(opcional)</span></label><input id="f-whatsapp" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" value="' + esc(d.whatsapp) + '"><p class="ayuda">' + esc(C.whatsapp) + '</p><p class="err" id="e-whatsapp" hidden></p></div>' +
+        '<div class="trampa" aria-hidden="true"><label for="f-web">Sitio web</label><input id="f-web" type="text" tabindex="-1" autocomplete="off"></div>' +
+        '<label class="casilla"><input id="f-consent" type="checkbox"><span>' + esc(C.consentimiento) + '</span></label><p class="err" id="e-consent" hidden></p>' +
+        '<label class="casilla"><input id="f-novedades" type="checkbox"><span>' + esc(C.novedades) + '</span></label>' +
+        '<button class="btn btn-violeta" type="submit">' + esc(C.boton) + '</button>' +
+        '<div class="aviso"><h3>Aviso de privacidad</h3><p>' + esc(C.aviso) + '</p><p><a href="' + esc(AD.politica) + '" target="_blank" rel="noopener">Política de privacidad completa</a></p></div>' +
+      '</form><button class="txtbtn" type="button" id="b-volver">Volver a las preguntas</button></div>';
+    if (d.profesion) $("f-profesion").value = d.profesion;
+    $("b-volver").onclick = function () { S.i = 6; pintarPregunta(); mostrar("p-pregunta"); };
+    $("f").onsubmit = function (ev) { ev.preventDefault(); enviar(); };
+  }
+  function error(campo, msg) {
+    var e = $("e-" + campo), inp = $("f-" + campo);
+    if (e) { e.textContent = msg || ""; e.hidden = !msg; }
+    if (inp) { inp.setAttribute("aria-invalid", msg ? "true" : "false"); if (msg) inp.setAttribute("aria-describedby", "e-" + campo); else inp.removeAttribute("aria-describedby"); }
+    return msg ? campo : null;
+  }
+  function enviar() {
+    var v = function (id) { var el = $("f-" + id); return el ? el.value.replace(/\s+/g, " ").trim() : ""; };
+    var d = { nombre: v("nombre"), profesion: v("profesion"), centro: v("centro"), correo: v("correo").toLowerCase(), whatsapp: v("whatsapp"), novedades: $("f-novedades").checked };
+    var digitos = d.whatsapp.replace(/\D/g, "");
+    var malos = [
+      error("nombre", d.nombre.length < 2 ? "Escribe tu nombre para mostrarte el resultado." : ""),
+      error("profesion", !d.profesion ? "Elige tu profesión o especialidad." : ""),
+      $("f-centro") ? error("centro", (S.perfil === "centro" && d.centro.length < 2) ? "Escribe el nombre del centro." : "") : null,
+      error("correo", !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.correo) ? "Revisa tu correo: falta algo, como la @ o el dominio." : ""),
+      error("whatsapp", (d.whatsapp && digitos.length < 8) ? "Revisa el número: debe tener al menos 8 dígitos. O déjalo vacío." : ""),
+      error("consent", !$("f-consent").checked ? "Marca la casilla del aviso de privacidad para continuar." : "")
+    ].filter(Boolean);
+    if (malos.length) { var el = $("f-" + malos[0]); if (el) el.focus(); return; }
+    S.datos = d;
+    var carga = { v: AD.version, perfil: S.perfil, r: S.r.slice(), nombre: d.nombre, profesion: d.profesion, centro: d.centro, correo: d.correo, whatsapp: d.whatsapp, novedades: d.novedades, consentimiento: true, origen: CFG.origen, ms: Date.now() - S.t0, web: $("f-web").value };
+    S.id = null;
+    pintarResultado(true);
+    mostrar("p-resultado");
+    servidor("registrar", carga, function (x) {
+      if (x && x.id) { S.id = x.id; vaciarCola(); }
+      if (!x || x.ok === false) sinCopia();
+      else if (x.copia === "pendiente") notaCopia("Tu copia por correo puede tardar unas horas en llegar. Tu resultado completo está en esta pantalla.");
+    }, sinCopia);
+  }
+  function notaCopia(texto) {
+    var n = $("nota-copia");
+    if (n) { n.hidden = false; n.textContent = texto; }
+  }
+  function sinCopia() {
+    notaCopia("No pudimos enviarte la copia por correo. Tu resultado está en esta pantalla; si quieres la copia, escríbenos a " + AD.correo + ".");
+  }
+
+  /* ---------- Resultado ---------- */
+  function tarjeta(id, v, tapar) {
+    var p = AD.preguntas[id - 1], t = p.tarjeta[v], ciego = S.r[id - 1] === "ns";
+    return '<article class="punto"><span class="tag' + (ciego ? " ciego" : "") + '">' + esc(ciego ? AD.resultado.ciego : AD.resultado.brecha) + '</span>' +
+      '<h3><span class="rev-t">' + esc(t.titulo) + (tapar ? '<span class="tapa cubre" aria-hidden="true"></span>' : '') + '</span></h3>' +
+      (ciego ? '<p class="ciego-t">' + esc(AD.resultado.ciegoTexto) + '</p>' : '') +
+      '<p>' + esc(t.texto) + '</p><p class="norma">' + esc(p.tarjeta.norma) + '</p></article>';
+  }
+  function zonaReserva(prod, etiqueta, principal) {
+    var L = AD.llamados, clase = principal ? "btn btn-claro" : "btn btn-borde";
+    if (CFG.reserva === "instagram") {
+      return '<a class="' + clase + '" href="' + esc(AD.instagram) + '" target="_blank" rel="noopener" data-evlink="reserva_' + prod + '">' + esc(etiqueta) + '</a><p class="chica">' + esc(L.reserva.instagram) + '</p>';
+    }
+    return '<div class="reserva" data-prod="' + prod + '">' +
+      '<button class="' + clase + '" type="button" data-reservar>' + esc(etiqueta) + '</button>' +
+      '<div class="conf" hidden><p>' + fmt(L.reserva.confirmar, { correo: S.datos.correo, precio: AD.productos[prod].precio }) + '</p>' +
+      '<button class="btn btn-claro" type="button" data-si>' + esc(L.reserva.si) + '</button><button class="lnk" type="button" data-no>' + esc(L.reserva.no) + '</button></div>' +
+      '<p class="hecho" hidden>' + fmt(L.reserva.listo, { correo: S.datos.correo }) + '</p></div>';
+  }
+  function botonReunion(etiqueta) {
+    if (CFG.agendaUrl) return '<a class="btn btn-claro" href="' + esc(CFG.agendaUrl) + '" target="_blank" rel="noopener" data-evlink="agenda_clic">' + esc(etiqueta) + '</a>';
+    return '<button class="btn btn-claro" type="button" data-ev="reunion">' + esc(etiqueta) + '</button>';
+  }
+  function bloqueLlamado(res, pf) {
+    var ll = Logica.llamado(pf.id, res.nivel, antesDelCorte(), hayPack()), L = AD.llamados, h = '<section class="cta" aria-label="Siguiente paso">';
+    if (ll.bloque === "M") {
+      h += '<h2>' + esc(L.M.titulo) + '</h2><p>' + esc(L.M.texto) + '</p>' + zonaReserva("mc", L.M.boton, true);
+      if (ll.pack) h += '<div class="pack">' + (ll.sugerido ? '<span class="chip">' + esc(L.M.sugerido) + '</span>' : '') + '<p>' + esc(L.M.pack) + '</p>' + zonaReserva("pack", L.M.botonPack, false) + '</div>';
+      h += CFG.agendaUrl ? '<a class="lnk" href="' + esc(CFG.agendaUrl) + '" target="_blank" rel="noopener" data-evlink="agenda_clic">' + esc(L.M.secundario) + '</a>' : '<button class="lnk" type="button" data-ev="reunion">' + esc(L.M.secundario) + '</button>';
+    } else if (ll.bloque === "RC") {
+      h += '<h2>' + esc(L.RC.titulo) + '</h2><p>' + esc(L.RC.texto) + '</p>' + botonReunion(L.RC.boton) + '<p class="chica">' + esc(L.RC.letra) + '</p>';
+      if (ll.lineaMC) h += '<div class="pack"><p>' + esc(L.RC.lineaMC) + '</p>' + zonaReserva("mc", L.RC.botonMC, false) + '</div>';
+    } else {
+      h += '<h2>' + esc(L.RI.titulo) + '</h2><p>' + esc(L.RI.texto) + '</p>' + botonReunion(L.RI.boton) + '<button class="lnk" type="button" data-ev="espera">' + esc(L.RI.secundario) + '</button>';
+    }
+    return h + '<p class="hecho" id="h-reunion" hidden>' + fmt(L.reunion.listo, { correo: S.datos.correo }) + '</p><p class="hecho" id="h-espera" hidden>' + fmt(L.espera.listo, { correo: S.datos.correo }) + '</p></section>';
+  }
+  function enlaceTest() { return CFG.url || "[enlace del test]"; }
+  function pintarResultado(animar) {
+    var res = Logica.resumen(AD, S.perfil, S.r), pf = Logica.perfil(AD, S.perfil), v = pf.variante, R = AD.resultado;
+    var lectura = res.puntos === 0 ? AD.lecturas[v].cero : AD.lecturas[v][res.nivel];
+    var nombre = S.datos.nombre.split(" ")[0];
+    var h = '<header class="cab">' + logo(false) + '</header>' +
+      '<div class="res-cab" data-nivel="' + res.nivel + '">' +
+        '<p class="eyebrow">' + esc(R.etiqueta) + '</p>' +
+        '<h1 class="res-t" data-foco>' + fmt(R.encabezado, { nombre: nombre }) + '</h1>' +
+        '<div><span class="nivel-n">' + esc(AD.niveles[res.nivel].nombre) + (animar ? '<span class="tapa cubre" aria-hidden="true"></span>' : '') + '</span></div>' +
+        '<div class="tramos" aria-hidden="true"><i class="tp"></i><i class="tm"></i><i class="tc"></i></div>' +
+        '<div class="tr-etq" aria-hidden="true"><span>Preventivo</span><span>Moderado</span><span>Crítico</span></div>' +
+        '<p class="cuenta">' + fmt(R.cuenta, { n: res.puntos }) + '</p>' +
+      '</div>' +
+      '<p class="lectura">' + esc(lectura) + '</p>';
+    if (res.principales.length) {
+      h += '<h2 class="sub">' + esc(res.principales.length === 2 ? R.dos : R.uno) + '</h2>';
+      res.principales.forEach(function (id) { h += tarjeta(id, v, animar); });
+    }
+    if (res.otros.length) {
+      h += '<div class="otros"><h2 class="sub chico">' + esc(R.otros) + '</h2><ul>';
+      res.otros.forEach(function (id) { h += '<li>' + esc(AD.preguntas[id - 1].tarjeta[v].titulo) + '</li>'; });
+      h += '</ul></div>';
+    }
+    h += '<p class="aclara">' + esc(R.aclaracion) + '</p>' + bloqueLlamado(res, pf) +
+      '<div class="comp"><p><b>' + esc(R.compartir) + '</b></p><div class="fila">' +
+        '<a class="btn btn-borde" href="https://wa.me/?text=' + encodeURIComponent(R.compartirTexto + " " + enlaceTest()) + '" target="_blank" rel="noopener" data-evlink="compartir">Por WhatsApp</a>' +
+        '<button class="btn btn-borde" type="button" data-copiar>Copiar enlace</button></div><p class="hecho" id="h-comp" hidden></p></div>' +
+      '<p class="cierre">' + esc(R.cierre) + '</p>' +
+      '<p class="letra2">' + fmt(R.letra, { correo: S.datos.correo }) + ' ' + esc(R.notaNormas) + '</p><p class="letra2" id="nota-copia" hidden></p>';
+    var cont = $("p-resultado");
+    cont.innerHTML = h;
+    if (animar) {
+      var tapas = cont.querySelectorAll(".cubre");
+      Array.prototype.forEach.call(tapas, function (t, n) { setTimeout(function () { t.className += " fuera"; }, 350 + n * 320); });
+    }
+  }
+  $("p-resultado").addEventListener("click", function (ev) {
+    var t = ev.target, zona;
+    if (!t || !t.getAttribute) return;
+    if (t.hasAttribute("data-reservar")) { zona = t.parentNode; zona.querySelector(".conf").hidden = false; t.hidden = true; zona.querySelector("[data-si]").focus(); return; }
+    if (t.hasAttribute("data-no")) { zona = t.parentNode.parentNode; zona.querySelector(".conf").hidden = true; zona.querySelector("[data-reservar]").hidden = false; return; }
+    if (t.hasAttribute("data-si")) { zona = t.parentNode.parentNode; zona.querySelector(".conf").hidden = true; zona.querySelector(".hecho").hidden = false; evento("reserva_" + zona.getAttribute("data-prod")); return; }
+    if (t.hasAttribute("data-ev")) { var tipo = t.getAttribute("data-ev"); t.hidden = true; var hh = $("h-" + tipo); if (hh) hh.hidden = false; evento(tipo); return; }
+    if (t.hasAttribute("data-evlink")) { evento(t.getAttribute("data-evlink")); return; }
+    if (t.hasAttribute("data-copiar")) {
+      var u = enlaceTest(), hc = $("h-comp"), listo = function () { hc.hidden = false; hc.textContent = "Enlace copiado."; }, manual = function () { hc.hidden = false; hc.textContent = "Copia este enlace: " + u; };
+      evento("compartir");
+      try { navigator.clipboard.writeText(u).then(listo, manual); } catch (e) { manual(); }
+    }
+  });
+
+
+  pintarInicio();
+  if (CFG.api && window.fetch) {                                       // ajustes vigentes (corte, cupos, reserva, agenda)
+    fetch(CFG.api + "?api=cfg").then(function (x) { return x.json(); }).then(function (x) {
+      ["corte", "packDisponible", "agendaUrl", "reserva"].forEach(function (k) { if (x && x[k] !== undefined) CFG[k] = x[k]; });
+    }).catch(function () {});
+  }
+})();
+</script>
+</body>
+</html>
