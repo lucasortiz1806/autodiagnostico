@@ -51,7 +51,7 @@ section h2{font-size:clamp(28px,5.5vw,38px);margin-bottom:22px}
 .nota{font-size:15px;color:#4a5566;margin-top:16px}
 .quien{display:grid;gap:22px;grid-template-columns:1fr}
 @media(min-width:680px){.quien{grid-template-columns:200px 1fr}}
-.foto{aspect-ratio:1;border-radius:16px;background:var(--salvia);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--tinta);text-align:center;padding:12px}
+.foto{width:100%;max-width:240px;height:auto;aspect-ratio:1;object-fit:cover;border-radius:16px;display:block}
 blockquote{background:#fff;border-left:6px solid var(--violeta);border-radius:12px;padding:22px 24px;font-size:20px}
 blockquote cite{display:block;font-style:normal;font-size:15px;margin-top:12px;color:#4a5566}
 details{background:#fff;border-radius:12px;padding:16px 18px;margin-bottom:10px}
@@ -140,12 +140,21 @@ footer{padding:28px 0;font-size:14px;color:#4a5566;text-align:center}
 </section>
 
 <section>
-  <div class="wrap">
+  <div class="wrap quien">
+    <img class="foto" src="lucas.jpg" alt="Lucas Ortiz Mancilla" width="420" height="420">
     <div>
       <h2>Quién hace la clase</h2>
       <p>Soy Lucas Ortiz Mancilla, egresado de Derecho de la Universidad de Chile y diplomado en Protección de Datos Personales en la misma universidad. En @datosensible.cl explico la ley de datos aplicada a la consulta, sin tecnicismos.</p>
       <p style="margin-top:12px">El 11 de noviembre hice una clase gratuita sobre este tema y se inscribieron más de 60 profesionales de la salud. Esta es la versión completa.</p>
     </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Lo que dijeron quienes asistieron</h2>
+    <blockquote>«Por fin alguien explicó la ley de datos sin tecnicismos. Salí sabiendo qué hacer en mi consulta, no solo qué dice la norma.»
+      <cite>Jorline Velásquez · Mg. Psicoterapia</cite></blockquote>
   </div>
 </section>
 
