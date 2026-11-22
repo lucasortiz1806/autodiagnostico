@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masterclass Fichas clínicas seguras · datosensible.cl</title>
+<meta property="og:title" content="Fichas clínicas seguras: la Ley 21.719 en tu consulta">
+<meta property="og:description" content="Masterclass para psicólogos, psiquiatras y médicos. Lunes 30 de noviembre, 19:00, online.">
+<meta name="description" content="Masterclass para psicólogos, psiquiatras y médicos con consulta privada: la Ley 21.719 aplicada a tu consulta. Lunes 30 de noviembre, 19:00, online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--tinta:#0E1A2B;--bata:#EEF1EF;--violeta:#5546E8;--salvia:#8FB5A3;--coral:#FF6B4A;--blanco:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Atkinson Hyperlegible",system-ui,sans-serif;color:var(--tinta);background:var(--bata);font-size:18px;line-height:1.55}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;letter-spacing:-.03em;line-height:1.08}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+.barra{background:var(--violeta);color:#fff;padding:0 .25em;border-radius:4px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+header{background:var(--tinta);color:var(--bata);padding:28px 0 56px}
+.logo{font-family:"Bricolage Grotesque";font-weight:800;font-size:22px;letter-spacing:-.04em;margin-bottom:44px}
+.logo b{background:var(--violeta);color:#fff;padding:0 6px;border-radius:4px;font-weight:800}
+.eyebrow{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:14px;color:var(--salvia);margin-bottom:14px}
+header h1{font-size:clamp(38px,8vw,60px);margin-bottom:18px}
+header p.lead{font-size:20px;max-width:34em;color:#d8dee6}
+.datos{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 30px}
+.chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 14px;font-weight:700;font-size:15px}
+.btn{display:inline-block;background:var(--violeta);color:#fff;text-decoration:none;font-weight:700;padding:16px 26px;border-radius:12px;font-size:18px}
+.btn.sec{background:transparent;border:2px solid currentColor;color:inherit}
+section{padding:56px 0;border-bottom:1px solid #d9dfdb}
+section h2{font-size:clamp(28px,5.5vw,38px);margin-bottom:22px}
+.preguntas{list-style:none;display:grid;gap:12px}
+.preguntas li{background:#fff;border-radius:12px;padding:16px 18px 16px 52px;position:relative}
+.preguntas li:before{content:"?";position:absolute;left:16px;top:14px;width:26px;height:26px;border-radius:50%;background:var(--tinta);color:var(--bata);font-weight:700;text-align:center;line-height:26px}
+.temario{counter-reset:t;list-style:none;display:grid;gap:14px}
+.temario li{counter-increment:t;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.temario li:before{content:counter(t);font-family:"Bricolage Grotesque";font-weight:800;font-size:28px;color:var(--violeta)}
+.temario b{display:block}
+.ofertas{display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:680px){.ofertas{grid-template-columns:1fr 1fr}}
+.oferta{background:#fff;border-radius:16px;padding:26px;display:flex;flex-direction:column}
+.oferta.pack{background:var(--tinta);color:var(--bata)}
+.oferta h3{font-size:26px;margin-bottom:4px}
+.precio{font-family:"Bricolage Grotesque";font-weight:800;font-size:40px;letter-spacing:-.03em;margin:8px 0 14px}
+.oferta ul{list-style:none;display:grid;gap:8px;margin-bottom:22px;flex:1}
+.oferta li{padding-left:24px;position:relative}
+.oferta li:before{content:"";position:absolute;left:0;top:.55em;width:12px;height:6px;background:var(--violeta);border-radius:2px}
+.oferta.pack li:before{background:var(--salvia)}
+.oferta .btn{text-align:center}
+.oferta.pack .btn{background:var(--bata);color:var(--tinta)}
+.nota{font-size:15px;color:#4a5566;margin-top:16px}
+.quien{display:grid;gap:22px;grid-template-columns:1fr}
+@media(min-width:680px){.quien{grid-template-columns:200px 1fr}}
+.foto{aspect-ratio:1;border-radius:16px;background:var(--salvia);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--tinta);text-align:center;padding:12px}
+blockquote{background:#fff;border-left:6px solid var(--violeta);border-radius:12px;padding:22px 24px;font-size:20px}
+blockquote cite{display:block;font-style:normal;font-size:15px;margin-top:12px;color:#4a5566}
+details{background:#fff;border-radius:12px;padding:16px 18px;margin-bottom:10px}
+summary{font-weight:700;cursor:pointer}
+details p{margin-top:10px}
+.garantia{background:var(--salvia);border-radius:16px;padding:24px;margin-top:22px}
+.final{background:var(--tinta);color:var(--bata);text-align:center;border:0}
+.final h2{color:#fff}
+.final .acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:18px}
+footer{padding:28px 0;font-size:14px;color:#4a5566;text-align:center}
+.borrador{background:var(--coral);color:var(--tinta);font-weight:700;text-align:center;padding:8px;font-size:14px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="logo">dato<b>sensible</b>.cl</div>
+    <div class="eyebrow">Masterclass para psicólogos, psiquiatras y médicos</div>
+    <h1>Fichas clínicas seguras: <span class="barra">la Ley 21.719</span> en tu consulta</h1>
+    <p class="lead">Dos horas en vivo para saber exactamente qué te exige la ley y dejar tu consulta en orden: consentimiento, fichas, WhatsApp y qué hacer si algo se filtra.</p>
+    <div class="datos">
+      <span class="chip">Lunes 30 de noviembre</span>
+      <span class="chip">19:00 a 21:00 (Chile)</span>
+      <span class="chip">Online, en vivo</span>
+      <span class="chip">Grabación por 30 días</span>
+    </div>
+    <a class="btn" href="#inscripcion">Ver opciones y reservar</a>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Tres preguntas para tu consulta</h2>
+    <ul class="preguntas">
+      <li>¿Tus pacientes aceptan un consentimiento que diga qué datos guardas, para qué y por cuánto tiempo?</li>
+      <li>¿Tienes un aviso de privacidad visible en tu web, Doctoralia o Encuadrado?</li>
+      <li>¿Sabes qué hacer si pierdes el celular donde te escriben tus pacientes?</li>
+    </ul>
+    <p style="margin-top:18px">Si dudaste en una, esta clase es para ti. Lo que tu paciente te cuenta es un dato sensible hoy, no solo cuando cambie la ley.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Qué vemos en las dos horas</h2>
+    <ol class="temario">
+      <li><div><b>Qué te exige la ley y qué ya era obligatorio</b>Qué datos de tus pacientes son sensibles y qué cambia para una consulta privada.</div></li>
+      <li><div><b>Tus fichas</b>Dónde guardarlas, por cuánto tiempo y quién más puede verlas: software, nube, secretaria, colegas.</div></li>
+      <li><div><b>Consentimiento y aviso de privacidad</b>Qué tienen que decir, y qué sobra.</div></li>
+      <li><div><b>WhatsApp y atención online</b>Cómo seguir usándolos sin exponer a tus pacientes.</div></li>
+      <li><div><b>Si algo se filtra</b>El paso a paso si pierdes el celular o te hackean el correo.</div></li>
+    </ol>
+  </div>
+</section>
+
+<section id="inscripcion">
+  <div class="wrap">
+    <h2>Elige tu opción</h2>
+    <div class="ofertas">
+      <div class="oferta">
+        <h3>Masterclass</h3>
+        <div class="precio">$45.000</div>
+        <ul>
+          <li>2 horas en vivo por Google Meet</li>
+          <li>Preguntas en vivo durante la clase</li>
+          <li>Grabación por 30 días</li>
+        </ul>
+        <a class="btn" href="https://mpago.la/1WQvMrf">Reservar masterclass</a>
+      </div>
+      <div class="oferta pack">
+        <h3>Pack Consulta Lista</h3>
+        <div class="precio">$100.000</div>
+        <ul>
+          <li>Todo lo de la masterclass</li>
+          <li>Seis plantillas listas para usar: consentimiento, checklist, kit WhatsApp, aviso de privacidad, contrato con proveedores y protocolo «¿y si pasa?»</li>
+          <li>Revisión escrita de tu consentimiento y tu aviso de privacidad</li>
+          <li>Reunión 1 a 1 de 30 minutos conmigo</li>
+          <li>Sesión de preguntas en vivo el jueves 10 de diciembre</li>
+        </ul>
+        <a class="btn" href="https://mpago.la/29f5oLh">Reservar Pack</a>
+      </div>
+    </div>
+    <p class="nota">Pagas con tarjeta o transferencia desde tu banco por Mercado Pago. Después de pagar, escríbeme tu nombre, correo y profesión por Instagram (@datosensible.cl) o a datosensiblecl@gmail.com y te llega el acceso. Inscripciones hasta el lunes 30 a las 17:00.</p>
+    <div class="garantia"><b>Garantía:</b> si al terminar la clase sientes que no te sirvió, me escribes y te devuelvo el 100 %.</div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div>
+      <h2>Quién hace la clase</h2>
+      <p>Soy Lucas Ortiz Mancilla, egresado de Derecho de la Universidad de Chile y diplomado en Protección de Datos Personales en la misma universidad. En @datosensible.cl explico la ley de datos aplicada a la consulta, sin tecnicismos.</p>
+      <p style="margin-top:12px">El 11 de noviembre hice una clase gratuita sobre este tema y se inscribieron más de 60 profesionales de la salud. Esta es la versión completa.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Preguntas frecuentes</h2>
+    <details><summary>¿Es lo mismo que la clase gratuita del 11 de noviembre?</summary><p>No. El 11 vimos el mapa en una hora. El 30 son dos horas aplicadas a tu consulta: consentimiento, fichas, WhatsApp, proveedores y qué hacer si algo se filtra.</p></details>
+    <details><summary>¿Y si ese día atiendo?</summary><p>Queda grabada y la puedes ver durante 30 días.</p></details>
+    <details><summary>¿Sirve para psicólogos, psiquiatras y médicos?</summary><p>Sí. Todos los ejemplos son de consulta privada en salud.</p></details>
+    <details><summary>¿Cómo pago?</summary><p>Por Mercado Pago, con tarjeta o con transferencia desde tu banco. Si prefieres transferir directo, escríbeme.</p></details>
+    <details><summary>¿Y si no me sirve?</summary><p>Si al terminar la clase sientes que no te sirvió, me escribes y te devuelvo el 100 %.</p></details>
+    <details><summary>¿Qué pasa después de pagar?</summary><p>Me escribes tu nombre, correo y profesión, y te llega el acceso a la clase a tu correo.</p></details>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2>Lunes 30 de noviembre, 19:00</h2>
+    <p>El secreto clínico también se guarda en el bolsillo.</p>
+    <div class="acciones">
+      <a class="btn" href="https://mpago.la/1WQvMrf">Masterclass · $45.000</a>
+      <a class="btn sec" href="https://mpago.la/29f5oLh">Pack Consulta Lista · $100.000</a>
+    </div>
+  </div>
+</section>
+<footer>datosensible.cl · @datosensible.cl · datosensiblecl@gmail.com</footer>
+</body>
+</html>
